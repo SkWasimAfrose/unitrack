@@ -177,7 +177,7 @@ export default function DayPlanner() {
             <DialogTrigger asChild>
               <Button variant="outline" className="h-12 px-6 rounded-2xl border-2 hover:bg-secondary font-bold gap-2">
                 <Palette className="h-5 w-5 text-brand-purple" />
-                Manage Categories
+                Add Categories
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[95%] sm:max-w-md rounded-3xl border-none shadow-2xl bg-background/95 backdrop-blur-xl">
