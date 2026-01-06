@@ -169,7 +169,7 @@ export default function Dashboard() {
             Good {today.getHours() < 12 ? 'morning' : today.getHours() < 17 ? 'afternoon' : 'evening'}, {user?.user_metadata?.full_name?.split(' ')[0] || 'Scholar'}! 👋
           </h1>
           <p className="text-muted-foreground mt-1">
-            Explore your academic journey for today
+            Everything you need, in one place
           </p>
         </div>
         <Button asChild className="gap-2">

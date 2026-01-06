@@ -86,9 +86,9 @@ export default function DayPlanner() {
       setNewSubject('');
       setNewSubjectColor(COLORS[0]);
       setSubjectDialogOpen(false);
-      toast({ title: "Subject added! 📚" });
+      toast({ title: "Category added! 📚" });
     } catch (error) {
-      toast({ title: "Failed to add subject", variant: "destructive" });
+      toast({ title: "Failed to add category", variant: "destructive" });
     }
   };
 
@@ -97,9 +97,9 @@ export default function DayPlanner() {
       await supabase.from('subjects').delete().eq('id', id);
       setSubjects(prev => prev.filter(s => s.id !== id));
       setSchedules(prev => prev.filter(s => s.subject_id !== id));
-      toast({ title: "Subject deleted" });
+      toast({ title: "Category deleted" });
     } catch (error) {
-      toast({ title: "Failed to delete subject", variant: "destructive" });
+      toast({ title: "Failed to delete category", variant: "destructive" });
     }
   };
 
@@ -167,9 +167,9 @@ export default function DayPlanner() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl lg:text-4xl font-display font-bold tracking-tight text-foreground">Academic Timeline</h1>
-          <p className="text-muted-foreground font-medium mt-1 uppercase text-xs tracking-widest">
-            Your structured learning schedule
+          <h1 className="text-3xl lg:text-4xl font-display font-bold tracking-tight text-foreground">Day Planner</h1>
+          <p className="text-muted-foreground font-medium mt-1 uppercase text-xs tracking-widest max-w-xl normal-case">
+            The Day Planner helps you plan your day — whether it’s classes, work, study sessions, or personal tasks.
           </p>
         </div>
         <div className="flex gap-3">
@@ -177,18 +177,18 @@ export default function DayPlanner() {
             <DialogTrigger asChild>
               <Button variant="outline" className="h-12 px-6 rounded-2xl border-2 hover:bg-secondary font-bold gap-2">
                 <Palette className="h-5 w-5 text-brand-purple" />
-                Manage Subjects
+                Manage Categories
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[95%] sm:max-w-md rounded-3xl border-none shadow-2xl bg-background/95 backdrop-blur-xl">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-bold tracking-tight">Academic Subjects</DialogTitle>
+                <DialogTitle className="text-2xl font-bold tracking-tight">Planner Categories</DialogTitle>
               </DialogHeader>
               <div className="space-y-6 pt-4">
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Subject Name</Label>
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Category Name</Label>
                   <Input
-                    placeholder="e.g., Mathematics"
+                    placeholder="e.g., Work, Gym, Study"
                     value={newSubject}
                     onChange={(e) => setNewSubject(e.target.value)}
                     className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-12 rounded-2xl font-medium"
@@ -213,7 +213,7 @@ export default function DayPlanner() {
                   </div>
                 </div>
                 <Button onClick={addSubject} className="w-full h-14 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95">
-                  Save Subject
+                  Save Category
                 </Button>
               </div>
             </DialogContent>
@@ -228,14 +228,14 @@ export default function DayPlanner() {
             </DialogTrigger>
             <DialogContent className="max-w-[95%] sm:max-w-md rounded-3xl border-none shadow-2xl bg-background/95 backdrop-blur-xl">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-bold tracking-tight">Schedule Study</DialogTitle>
+                <DialogTitle className="text-2xl font-bold tracking-tight">Add to Schedule</DialogTitle>
               </DialogHeader>
               <div className="space-y-5 pt-4">
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Choose Subject</Label>
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Choose Category</Label>
                   <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                     <SelectTrigger className="bg-secondary/50 border-none focus:ring-brand-purple h-12 rounded-2xl font-bold">
-                      <SelectValue placeholder="Select a course" />
+                      <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl border-none shadow-2xl">
                       {subjects.map(subject => (
@@ -249,7 +249,7 @@ export default function DayPlanner() {
                     </SelectContent>
                   </Select>
                   {subjects.length === 0 && (
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter px-1">Please add a subject first</p>
+                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter px-1">Please add a category first</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -287,7 +287,7 @@ export default function DayPlanner() {
       {/* Subjects Horizontal Scroll */}
       {subjects.length > 0 && (
         <div className="flex flex-col gap-3">
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-2 opacity-60">Active Subjects</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-2 opacity-60">My Categories</p>
           <div className="flex flex-wrap gap-3">
             {subjects.map(subject => (
               <div

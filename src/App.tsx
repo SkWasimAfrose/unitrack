@@ -16,6 +16,7 @@ import Expenses from "./pages/Expenses";
 import Notes from "./pages/Notes";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Onboarding from "./pages/Onboarding";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
+    const onboardingCompleted = localStorage.getItem("onboarding_completed") === "true";
+    if (!onboardingCompleted) {
+      return <Navigate to="/onboarding" replace />;
+    }
     return <Navigate to="/auth" replace />;
   }
 
@@ -40,6 +45,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/auth" element={<Auth />} />
       <Route
         path="/"

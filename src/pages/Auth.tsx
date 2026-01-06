@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,15 @@ export default function Auth() {
   const { user, signIn, signUp, signInWithGoogle, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Redirect to onboarding if not completed
+  useEffect(() => {
+    const onboardingCompleted = localStorage.getItem("onboarding_completed") === "true";
+    if (!onboardingCompleted && !user && !authLoading) {
+      navigate('/onboarding');
+    }
+  }, [user, authLoading, navigate]);
 
   // Login state
   const [loginEmail, setLoginEmail] = useState('');
@@ -143,7 +152,7 @@ export default function Auth() {
             <GraduationCap className="h-10 w-10 text-white" />
           </div>
           <h1 className="font-display font-bold text-3xl tracking-tight text-foreground mt-2">UniTrack</h1>
-          <p className="text-muted-foreground text-sm font-medium">Your personal academic companion</p>
+          <p className="text-muted-foreground text-sm font-medium">One place to organize your day and stay on track</p>
         </div>
 
         <Card className="shadow-2xl border-border/50 bg-card/80 backdrop-blur-xl">
@@ -282,7 +291,7 @@ export default function Auth() {
         </Card>
 
         <p className="text-center text-[10px] uppercase font-bold tracking-widest text-muted-foreground mt-8 opacity-60">
-          Designed for students, by students.
+          Build & Design by <a href="https://whoiswasim.vercel.app/" target="_blank" rel="noreferrer" className="hover:text-brand-purple transition-colors">Sk Wasim Afrose</a>
         </p>
       </div>
     </div>
