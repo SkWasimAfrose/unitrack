@@ -1,37 +1,36 @@
-import { ReactNode, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  CheckSquare, 
-  Wallet, 
-  StickyNote, 
-  User, 
-  Menu, 
+import { ReactNode, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Calendar,
+  CheckSquare,
+  Wallet,
+  StickyNote,
+  User,
+  Menu,
   X,
   LogOut,
-  GraduationCap,
   Sun,
   Moon,
-  Monitor
-} from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { InstallPrompt } from '../pwa/InstallPrompt';
+  Monitor,
+} from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { InstallPrompt } from "../pwa/InstallPrompt";
 
 interface AppLayoutProps {
   children: ReactNode;
 }
 
 const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/planner', icon: Calendar, label: 'Day Planner' },
-  { to: '/tasks', icon: CheckSquare, label: 'Tasks' },
-  { to: '/expenses', icon: Wallet, label: 'Expenses' },
-  { to: '/notes', icon: StickyNote, label: 'Notes' },
-  { to: '/profile', icon: User, label: 'Profile' },
+  { to: "/", icon: LayoutDashboard, label: "Dashboard" },
+  { to: "/planner", icon: Calendar, label: "Day Planner" },
+  { to: "/tasks", icon: CheckSquare, label: "Tasks" },
+  { to: "/expenses", icon: Wallet, label: "Expenses" },
+  { to: "/notes", icon: StickyNote, label: "Notes" },
+  { to: "/profile", icon: User, label: "Profile" },
 ];
 
 export function AppLayout({ children }: AppLayoutProps) {
@@ -45,11 +44,16 @@ export function AppLayout({ children }: AppLayoutProps) {
       <InstallPrompt />
       {/* Mobile header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-card/80 backdrop-blur-md border-b border-border z-50 flex items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="p-1.5 bg-brand-purple rounded-lg shadow-sm">
-            <GraduationCap className="h-6 w-6 text-white" />
+        <Link
+          to="/"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <div className="flex items-center justify-center">
+            <img src="/logo.webp" alt="UniTrack logo" className="h-8 w-8 object-contain rounded-full" />
           </div>
-          <span className="font-display font-bold text-lg tracking-tight">UniTrack</span>
+          <span className="font-display font-bold text-lg tracking-tight">
+            UniTrack
+          </span>
         </Link>
         <Button
           variant="ghost"
@@ -57,7 +61,11 @@ export function AppLayout({ children }: AppLayoutProps) {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="rounded-xl"
         >
-          {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {sidebarOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </Button>
       </header>
 
@@ -71,16 +79,23 @@ export function AppLayout({ children }: AppLayoutProps) {
       >
         <div className="flex flex-col h-full bg-sidebar-background">
           {/* Logo */}
-          <Link to="/" className="h-20 flex items-center gap-3 px-8 border-b border-sidebar-border/50 mb-4 hover:bg-sidebar-accent/50 transition-colors">
-            <div className="p-2 bg-brand-purple rounded-xl shadow-lg shadow-brand-purple/20">
-              <GraduationCap className="h-6 w-6 text-white" />
+          <Link
+            to="/"
+            className="h-20 flex items-center gap-3 px-8 border-b border-sidebar-border/50 mb-4 hover:bg-sidebar-accent/50 transition-colors"
+          >
+            <div className="flex items-center justify-center">
+              <img src="/logo.webp" alt="UniTrack logo" className="h-10 w-10 object-contain rounded-full" />
             </div>
-            <span className="font-display font-bold text-2xl tracking-tight text-sidebar-foreground">UniTrack</span>
+            <span className="font-display font-bold text-2xl tracking-tight text-sidebar-foreground">
+              UniTrack
+            </span>
           </Link>
 
           {/* Navigation */}
           <nav className="flex-1 py-4 px-4 space-y-1.5">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-4 mb-2 opacity-50">Menu</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-4 mb-2 opacity-50">
+              Menu
+            </p>
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -95,7 +110,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                   )
                 }
               >
-                <item.icon className={cn("h-5 w-5 transition-transform duration-300 group-hover:scale-110")} />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5 transition-transform duration-300 group-hover:scale-110"
+                  )}
+                />
                 {item.label}
               </NavLink>
             ))}
@@ -106,19 +125,19 @@ export function AppLayout({ children }: AppLayoutProps) {
             {/* Theme Switcher */}
             <div className="bg-sidebar-accent/50 p-1.5 rounded-2xl flex items-center justify-between gap-1 shadow-inner">
               {[
-                { id: 'light', icon: Sun, label: 'Light' },
-                { id: 'dark', icon: Moon, label: 'Dark' },
-                { id: 'system', icon: Monitor, label: 'System' }
+                { id: "light", icon: Sun, label: "Light" },
+                { id: "dark", icon: Moon, label: "Dark" },
+                { id: "system", icon: Monitor, label: "System" },
               ].map((t) => (
                 <Button
                   key={t.id}
                   variant="ghost"
                   size="sm"
-                  onClick={() => setTheme(t.id as 'light' | 'dark' | 'system')}
+                  onClick={() => setTheme(t.id as "light" | "dark" | "system")}
                   className={cn(
                     "flex-1 h-9 rounded-xl transition-all duration-300",
-                    theme === t.id 
-                      ? "bg-white dark:bg-sidebar-background shadow-md text-brand-purple" 
+                    theme === t.id
+                      ? "bg-white dark:bg-sidebar-background shadow-md text-brand-purple"
                       : "text-muted-foreground hover:bg-transparent"
                   )}
                 >

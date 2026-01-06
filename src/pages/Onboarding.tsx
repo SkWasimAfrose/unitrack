@@ -36,9 +36,7 @@ export default function Onboarding() {
           <div className="text-center space-y-6">
             <div className="flex justify-center mb-8">
               <div className="w-24 h-24 bg-primary/10 rounded-3xl flex items-center justify-center shadow-xl shadow-primary/10 transform -rotate-12">
-                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center transform rotate-12">
-                  <CheckCircle2 className="w-8 h-8 text-primary-foreground" />
-                </div>
+                <img src="/logo.webp" alt="UniTrack Logo" className="w-16 h-16 object-contain transform rotate-12 rounded-full" />
               </div>
             </div>
             

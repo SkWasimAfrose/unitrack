@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { GraduationCap, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 
 const emailSchema = z.string().email('Please enter a valid email');
@@ -148,8 +148,8 @@ export default function Auth() {
       <div className="w-full max-w-md animate-fade-in relative z-10">
         {/* Logo */}
         <div className="flex flex-col items-center justify-center gap-2 mb-10">
-          <div className="p-3 bg-brand-purple rounded-2xl shadow-lg shadow-brand-purple/30">
-            <GraduationCap className="h-10 w-10 text-white" />
+          <div className="flex items-center justify-center p-2 rounded-2xl bg-white/10 backdrop-blur-sm shadow-xl">
+            <img src="/logo.webp" alt="UniTrack logo" className="h-16 w-16 object-contain rounded-full" />
           </div>
           <h1 className="font-display font-bold text-3xl tracking-tight text-foreground mt-2">UniTrack</h1>
           <p className="text-muted-foreground text-sm font-medium">One place to organize your day and stay on track</p>
