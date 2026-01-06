@@ -30,50 +30,56 @@ export function UpcomingTasks({ tasks, onToggle }: UpcomingTasksProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        <Circle className="h-12 w-12 mx-auto mb-2 opacity-30" />
-        <p className="text-sm">No upcoming tasks</p>
-        <p className="text-xs mt-1">Add a task to get started</p>
+      <div className="text-center py-10 bg-secondary/20 rounded-2xl border border-dashed border-border">
+        <div className="p-3 bg-white dark:bg-card rounded-xl shadow-sm w-fit mx-auto mb-3">
+          <Circle className="h-6 w-6 text-brand-pink" />
+        </div>
+        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Tasks all clear</p>
+        <p className="text-xs text-muted-foreground mt-1 font-medium">Add a task to stay on top!</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {tasks.slice(0, 5).map((task) => (
         <div
           key={task.id}
           className={cn(
-            "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group",
-            task.is_completed ? "bg-muted/50" : "hover:bg-secondary"
+            "flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group border border-transparent hover:border-brand-pink/20 hover:bg-card hover:shadow-lg hover:shadow-brand-pink/5",
+            task.is_completed ? "bg-secondary/30 opacity-60" : "bg-secondary/50"
           )}
         >
           <button
             onClick={() => onToggle(task.id, !task.is_completed)}
-            className="flex-shrink-0"
+            className="flex-shrink-0 transition-transform duration-300 hover:scale-110 active:scale-95"
           >
             {task.is_completed ? (
-              <CheckCircle2 className="h-5 w-5 text-success" />
+              <div className="p-1.5 bg-brand-green/20 text-brand-green rounded-lg">
+                <CheckCircle2 className="h-5 w-5" />
+              </div>
             ) : (
-              <Circle className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <div className="p-1.5 bg-white dark:bg-card text-muted-foreground group-hover:text-brand-pink group-hover:bg-brand-pink/10 rounded-lg shadow-sm">
+                <Circle className="h-5 w-5" />
+              </div>
             )}
           </button>
           <div className="flex-1 min-w-0">
             <p className={cn(
-              "text-sm font-medium truncate",
-              task.is_completed && "line-through text-muted-foreground"
+              "text-base font-bold tracking-tight truncate transition-all duration-300",
+              task.is_completed ? "line-through text-muted-foreground" : "text-foreground group-hover:text-brand-pink"
             )}>
               {task.title}
             </p>
           </div>
           {task.deadline && (
             <span className={cn(
-              "text-xs px-2 py-1 rounded-full flex items-center gap-1",
+              "text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm transition-colors",
               isOverdue(task.deadline) && !task.is_completed
                 ? "bg-destructive/10 text-destructive"
-                : "bg-muted text-muted-foreground"
+                : "bg-white dark:bg-card text-muted-foreground group-hover:bg-brand-pink/10 group-hover:text-brand-pink"
             )}>
-              <Clock className="h-3 w-3" />
+              <Clock className="h-3.5 w-3.5" />
               {formatDeadline(task.deadline)}
             </span>
           )}

@@ -77,11 +77,11 @@ export default function Dashboard() {
         .eq('day_of_week', dayOfWeek)
         .order('start_time');
 
-      const formattedSchedules = (schedulesData || []).map((s: any) => ({
+      const formattedSchedules = (schedulesData || []).map((s) => ({
         id: s.id,
         start_time: s.start_time,
         end_time: s.end_time,
-        subject: s.subjects
+        subject: s.subjects as { name: string; color: string } | null
       }));
       setSchedules(formattedSchedules);
 
@@ -166,10 +166,10 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl lg:text-3xl font-display font-bold">
-            Good {today.getHours() < 12 ? 'morning' : today.getHours() < 17 ? 'afternoon' : 'evening'}! 👋
+            Good {today.getHours() < 12 ? 'morning' : today.getHours() < 17 ? 'afternoon' : 'evening'}, {user?.user_metadata?.full_name?.split(' ')[0] || 'Scholar'}! 👋
           </h1>
           <p className="text-muted-foreground mt-1">
-            Here's your overview for today
+            Explore your academic journey for today
           </p>
         </div>
         <Button asChild className="gap-2">
@@ -187,24 +187,28 @@ export default function Dashboard() {
           value={pendingTasks}
           subtitle="assignments due"
           icon={<CheckSquare className="h-5 w-5" />}
+          variant="pink"
         />
         <StatCard
-          title="Today's Classes"
+          title="Today's Sessions"
           value={todaySchedulesCount}
-          subtitle="study sessions"
+          subtitle="sessions scheduled"
           icon={<BookOpen className="h-5 w-5" />}
+          variant="purple"
         />
         <StatCard
           title="Monthly Spent"
           value={`₹${spent.toLocaleString()}`}
           subtitle={`of ₹${budget.toLocaleString()}`}
           icon={<Wallet className="h-5 w-5" />}
+          variant="yellow"
         />
         <StatCard
           title="Quick Notes"
           value={notesCount}
           subtitle="saved notes"
           icon={<StickyNote className="h-5 w-5" />}
+          variant="blue"
         />
       </div>
 

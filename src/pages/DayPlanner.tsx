@@ -155,84 +155,93 @@ export default function DayPlanner() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="relative">
+          <div className="h-12 w-12 rounded-full border-4 border-brand-purple/20 border-t-brand-purple animate-spin" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in pb-10">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-display font-bold">Day Planner</h1>
-          <p className="text-muted-foreground mt-1">Organize your daily schedule</p>
+          <h1 className="text-3xl lg:text-4xl font-display font-bold tracking-tight text-foreground">Academic Timeline</h1>
+          <p className="text-muted-foreground font-medium mt-1 uppercase text-xs tracking-widest">
+            Your structured learning schedule
+          </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Dialog open={subjectDialogOpen} onOpenChange={setSubjectDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Palette className="h-4 w-4" />
-                Add Subject
+              <Button variant="outline" className="h-12 px-6 rounded-2xl border-2 hover:bg-secondary font-bold gap-2">
+                <Palette className="h-5 w-5 text-brand-purple" />
+                Manage Subjects
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95%] sm:max-w-md rounded-xl">
+            <DialogContent className="max-w-[95%] sm:max-w-md rounded-3xl border-none shadow-2xl bg-background/95 backdrop-blur-xl">
               <DialogHeader>
-                <DialogTitle>Add New Subject</DialogTitle>
+                <DialogTitle className="text-2xl font-bold tracking-tight">Academic Subjects</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
+              <div className="space-y-6 pt-4">
                 <div className="space-y-2">
-                  <Label>Subject Name</Label>
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Subject Name</Label>
                   <Input
                     placeholder="e.g., Mathematics"
                     value={newSubject}
                     onChange={(e) => setNewSubject(e.target.value)}
+                    className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-12 rounded-2xl font-medium"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label>Color</Label>
-                  <div className="flex flex-wrap gap-2">
+                <div className="space-y-3">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Assign Color</Label>
+                  <div className="flex flex-wrap gap-3 bg-secondary/30 p-3 rounded-2xl">
                     {COLORS.map(color => (
                       <button
                         key={color}
                         onClick={() => setNewSubjectColor(color)}
                         className={cn(
-                          "w-8 h-8 rounded-full transition-all",
-                          newSubjectColor === color && "ring-2 ring-offset-2 ring-foreground"
+                          "w-9 h-9 rounded-xl transition-all duration-300 shadow-sm",
+                          newSubjectColor === color 
+                            ? "ring-4 ring-brand-purple/30 scale-110 shadow-lg" 
+                            : "hover:scale-105 active:scale-95"
                         )}
                         style={{ backgroundColor: color }}
                       />
                     ))}
                   </div>
                 </div>
-                <Button onClick={addSubject} className="w-full">Add Subject</Button>
+                <Button onClick={addSubject} className="w-full h-14 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95">
+                  Save Subject
+                </Button>
               </div>
             </DialogContent>
           </Dialog>
 
           <Dialog open={scheduleDialogOpen} onOpenChange={setScheduleDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                Add Schedule
+              <Button className="h-12 px-6 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold transition-all shadow-lg shadow-brand-purple/20 gap-2">
+                <Plus className="h-5 w-5" />
+                Plan Session
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95%] sm:max-w-md rounded-xl">
+            <DialogContent className="max-w-[95%] sm:max-w-md rounded-3xl border-none shadow-2xl bg-background/95 backdrop-blur-xl">
               <DialogHeader>
-                <DialogTitle>Add Study Session</DialogTitle>
+                <DialogTitle className="text-2xl font-bold tracking-tight">Schedule Study</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
+              <div className="space-y-5 pt-4">
                 <div className="space-y-2">
-                  <Label>Subject</Label>
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Choose Subject</Label>
                   <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a subject" />
+                    <SelectTrigger className="bg-secondary/50 border-none focus:ring-brand-purple h-12 rounded-2xl font-bold">
+                      <SelectValue placeholder="Select a course" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-2xl border-none shadow-2xl">
                       {subjects.map(subject => (
-                        <SelectItem key={subject.id} value={subject.id}>
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: subject.color }} />
+                        <SelectItem key={subject.id} value={subject.id} className="rounded-xl my-1 font-medium">
+                          <div className="flex items-center gap-3">
+                            <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: subject.color }} />
                             {subject.name}
                           </div>
                         </SelectItem>
@@ -240,34 +249,34 @@ export default function DayPlanner() {
                     </SelectContent>
                   </Select>
                   {subjects.length === 0 && (
-                    <p className="text-xs text-muted-foreground">Add a subject first</p>
+                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter px-1">Please add a subject first</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label>Day</Label>
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Day of Week</Label>
                   <Select value={selectedDay} onValueChange={setSelectedDay}>
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-secondary/50 border-none focus:ring-brand-purple h-12 rounded-2xl font-bold">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rounded-2xl border-none shadow-2xl">
                       {DAYS.map((day, index) => (
-                        <SelectItem key={index} value={index.toString()}>{day}</SelectItem>
+                        <SelectItem key={index} value={index.toString()} className="rounded-xl my-1 font-medium">{day}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Start Time</Label>
-                    <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                    <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Start</Label>
+                    <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-12 rounded-2xl font-bold" />
                   </div>
                   <div className="space-y-2">
-                    <Label>End Time</Label>
-                    <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+                    <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">End</Label>
+                    <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-12 rounded-2xl font-bold" />
                   </div>
                 </div>
-                <Button onClick={addSchedule} className="w-full" disabled={!selectedSubject}>
-                  Add to Schedule
+                <Button onClick={addSchedule} className="w-full h-14 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95" disabled={!selectedSubject}>
+                  Add to Timeline
                 </Button>
               </div>
             </DialogContent>
@@ -275,89 +284,108 @@ export default function DayPlanner() {
         </div>
       </div>
 
-      {/* Subjects */}
+      {/* Subjects Horizontal Scroll */}
       {subjects.length > 0 && (
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Your Subjects</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {subjects.map(subject => (
-                <div
-                  key={subject.id}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary group"
+        <div className="flex flex-col gap-3">
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-2 opacity-60">Active Subjects</p>
+          <div className="flex flex-wrap gap-3">
+            {subjects.map(subject => (
+              <div
+                key={subject.id}
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-card border border-border/50 shadow-sm hover:shadow-md transition-all group"
+              >
+                <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: subject.color }} />
+                <span className="text-sm font-bold tracking-tight">{subject.name}</span>
+                <button
+                  onClick={() => deleteSubject(subject.id)}
+                  className="w-6 h-6 flex items-center justify-center rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-destructive/10 hover:text-destructive"
                 >
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: subject.color }} />
-                  <span className="text-sm font-medium">{subject.name}</span>
-                  <button
-                    onClick={() => deleteSubject(subject.id)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
-      {/* Weekly Schedule */}
-      <div className="grid gap-4">
+      {/* Weekly Schedule Timeline */}
+      <div className="grid gap-8 pb-10">
         {DAYS.map((day, index) => {
           const daySchedules = getSchedulesForDay(index);
           const isToday = new Date().getDay() === index;
 
           return (
-            <Card key={day} className={cn(isToday && "ring-2 ring-primary/50")}>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
+            <div key={day} className="relative group">
+              <div className="flex items-center gap-4 mb-4">
+                <h3 className={cn(
+                  "text-xl font-bold tracking-tight uppercase tracking-widest text-xs",
+                  isToday ? "text-brand-purple" : "text-muted-foreground"
+                )}>
                   {day}
-                  {isToday && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-primary-foreground">
-                      Today
-                    </span>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+                {isToday && (
+                  <div className="flex-1 h-px bg-brand-purple/20" />
+                )}
+                {isToday && (
+                  <span className="text-[10px] px-3 py-1 rounded-full bg-brand-purple text-white font-black uppercase tracking-widest animate-pulse">
+                    Live Today
+                  </span>
+                )}
+              </div>
+              
+              <div className="space-y-4 ml-2 border-l-2 border-dashed border-border/50 pl-6 pb-2">
                 {daySchedules.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No study sessions scheduled</p>
+                  <div className="p-4 rounded-2xl bg-secondary/20 border border-transparent">
+                    <p className="text-sm font-medium text-muted-foreground italic">No sessions planned</p>
+                  </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     {daySchedules.map(schedule => (
                       <div
                         key={schedule.id}
-                        className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 group"
+                        className="group flex flex-col p-6 rounded-[28px] bg-card border border-border/50 shadow-sm hover:shadow-xl hover:shadow-brand-purple/5 transition-all duration-300 relative overflow-hidden"
                       >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="w-1 h-10 rounded-full"
-                            style={{ backgroundColor: schedule.subjects?.color || '#6366f1' }}
-                          />
-                          <div>
-                            <p className="font-medium text-sm">{schedule.subjects?.name}</p>
-                            <p className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}
-                            </p>
+                        <div 
+                          className="absolute bottom-0 right-0 w-24 h-24 translate-x-12 translate-y-12 rounded-full opacity-5 pointer-events-none"
+                          style={{ backgroundColor: schedule.subjects?.color || 'hsl(var(--brand-purple))' }}
+                        />
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-1.5 h-10 rounded-full shadow-sm"
+                              style={{ backgroundColor: schedule.subjects?.color || 'hsl(var(--brand-purple))' }}
+                            />
+                            <div>
+                              <p className="font-bold text-lg tracking-tight group-hover:text-brand-purple transition-colors">
+                                {schedule.subjects?.name}
+                              </p>
+                              <div className="flex items-center gap-2 mt-1">
+                                <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded-md uppercase tracking-widest">
+                                  <Clock className="h-3 w-3" />
+                                  {formatTime(schedule.start_time)}
+                                </div>
+                                <span className="text-[10px] text-muted-foreground">→</span>
+                                <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded-md uppercase tracking-widest">
+                                  {formatTime(schedule.end_time)}
+                                </div>
+                              </div>
+                            </div>
                           </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-9 w-9 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive shrink-0 rounded-xl"
+                            onClick={() => deleteSchedule(schedule.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => deleteSchedule(schedule.id)}
-                        >
-                          <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
-                        </Button>
                       </div>
                     ))}
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           );
         })}
       </div>

@@ -70,6 +70,13 @@ export default {
           pink: "hsl(var(--note-pink))",
           purple: "hsl(var(--note-purple))",
         },
+        brand: {
+          purple: "hsl(var(--brand-purple))",
+          pink: "hsl(var(--brand-pink))",
+          yellow: "hsl(var(--brand-yellow))",
+          green: "hsl(var(--brand-green))",
+          blue: "hsl(var(--brand-blue))",
+        },
         category: {
           food: "hsl(var(--category-food))",
           travel: "hsl(var(--category-travel))",
