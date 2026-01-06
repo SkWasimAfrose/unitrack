@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { User, Moon, Sun, Trash2, Save, Loader2 } from 'lucide-react';
+import { User, Moon, Sun, Monitor, Trash2, Save, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -19,7 +18,7 @@ interface Profile {
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [profile, setProfile] = useState<Profile>({ full_name: '', course: '' });
   const [loading, setLoading] = useState(true);
@@ -153,19 +152,43 @@ export default function ProfilePage() {
           <CardDescription>Customize your experience</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              {theme === 'dark' ? (
-                <Moon className="h-5 w-5 text-muted-foreground" />
-              ) : (
-                <Sun className="h-5 w-5 text-muted-foreground" />
-              )}
+              <Sun className="h-5 w-5 text-muted-foreground" />
               <div>
-                <p className="font-medium">Dark Mode</p>
-                <p className="text-sm text-muted-foreground">Switch between light and dark themes</p>
+                <p className="font-medium">Theme</p>
+                <p className="text-sm text-muted-foreground">Select your preferred appearance</p>
               </div>
             </div>
-            <Switch checked={theme === 'dark'} onCheckedChange={toggleTheme} />
+            <div className="flex items-center gap-2 p-1 bg-secondary rounded-lg w-fit">
+              <Button
+                variant={theme === 'light' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setTheme('light')}
+                className="gap-2"
+              >
+                <Sun className="h-4 w-4" />
+                Light
+              </Button>
+              <Button
+                variant={theme === 'dark' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setTheme('dark')}
+                className="gap-2"
+              >
+                <Moon className="h-4 w-4" />
+                Dark
+              </Button>
+              <Button
+                variant={theme === 'system' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setTheme('system')}
+                className="gap-2"
+              >
+                <Monitor className="h-4 w-4" />
+                System
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

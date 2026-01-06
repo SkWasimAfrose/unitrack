@@ -10,9 +10,13 @@ import {
   Menu, 
   X,
   LogOut,
-  GraduationCap
+  GraduationCap,
+  Sun,
+  Moon,
+  Monitor
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +26,7 @@ interface AppLayoutProps {
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/planner', icon: Calendar, label: 'Study Planner' },
+  { to: '/planner', icon: Calendar, label: 'Day Planner' },
   { to: '/tasks', icon: CheckSquare, label: 'Tasks' },
   { to: '/expenses', icon: Wallet, label: 'Expenses' },
   { to: '/notes', icon: StickyNote, label: 'Notes' },
@@ -32,6 +36,7 @@ const navItems = [
 export function AppLayout({ children }: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
 
   return (
@@ -87,6 +92,37 @@ export function AppLayout({ children }: AppLayoutProps) {
               </NavLink>
             ))}
           </nav>
+
+          {/* Theme Switcher */}
+          <div className="px-6 py-4 border-t border-border flex items-center justify-between gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme('light')}
+              className={cn("h-9 w-9", theme === 'light' && "bg-primary text-primary-foreground shadow-sm")}
+              title="Light Mode"
+            >
+              <Sun className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme('dark')}
+              className={cn("h-9 w-9", theme === 'dark' && "bg-primary text-primary-foreground shadow-sm")}
+              title="Dark Mode"
+            >
+              <Moon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme('system')}
+              className={cn("h-9 w-9", theme === 'system' && "bg-primary text-primary-foreground shadow-sm")}
+              title="System Theme"
+            >
+              <Monitor className="h-4 w-4" />
+            </Button>
+          </div>
 
           {/* Logout */}
           <div className="p-3 border-t border-border">

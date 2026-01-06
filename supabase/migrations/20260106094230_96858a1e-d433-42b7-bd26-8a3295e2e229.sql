@@ -141,6 +141,15 @@ RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO public.profiles (user_id, full_name)
   VALUES (NEW.id, NEW.raw_user_meta_data ->> 'full_name');
+
+  -- Insert default subjects
+  INSERT INTO public.subjects (user_id, name, color)
+  VALUES
+    (NEW.id, 'Cooking', '#f97316'), -- Orange
+    (NEW.id, 'Running', '#22c55e'), -- Green
+    (NEW.id, 'Study', '#6366f1'),   -- Indigo
+    (NEW.id, 'Work', '#3b82f6');    -- Blue
+
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;

@@ -10,7 +10,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 // Pages
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import StudyPlanner from "./pages/StudyPlanner";
+import DayPlanner from "./pages/DayPlanner";
 import Tasks from "./pages/Tasks";
 import Expenses from "./pages/Expenses";
 import Notes from "./pages/Notes";
@@ -53,7 +53,7 @@ function AppRoutes() {
         path="/planner"
         element={
           <ProtectedRoute>
-            <StudyPlanner />
+            <DayPlanner />
           </ProtectedRoute>
         }
       />

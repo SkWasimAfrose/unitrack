@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, CheckCircle2, Circle, Clock, Calendar } from 'lucide-react';
-import { format, isToday, isTomorrow, isPast } from 'date-fns';
+import { Plus, Trash2, CheckCircle2, Circle, Clock, Calendar as CalendarIcon } from 'lucide-react';
+import { format, isToday, isTomorrow, isPast, set } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -33,7 +35,8 @@ export default function Tasks() {
   // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [deadline, setDeadline] = useState('');
+  const [date, setDate] = useState<Date | undefined>();
+  const [time, setTime] = useState('12:00');
 
   useEffect(() => {
     if (user) fetchTasks();
@@ -59,13 +62,21 @@ export default function Tasks() {
     if (!title.trim()) return;
 
     try {
+      let deadlineTimestamp: string | null = null;
+      
+      if (date) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const combinedDate = set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
+        deadlineTimestamp = combinedDate.toISOString();
+      }
+
       const { data, error } = await supabase
         .from('tasks')
         .insert({
           user_id: user!.id,
           title,
           description: description || null,
-          deadline: deadline ? new Date(deadline).toISOString() : null
+          deadline: deadlineTimestamp
         })
         .select()
         .single();
@@ -75,7 +86,8 @@ export default function Tasks() {
       setTasks(prev => [data, ...prev]);
       setTitle('');
       setDescription('');
-      setDeadline('');
+      setDate(undefined);
+      setTime('12:00');
       setDialogOpen(false);
       toast({ title: "Task added! ✅" });
     } catch (error) {
@@ -208,7 +220,7 @@ export default function Tasks() {
               Add Task
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-[95%] sm:max-w-md rounded-xl">
             <DialogHeader>
               <DialogTitle>Add New Task</DialogTitle>
             </DialogHeader>
@@ -232,11 +244,36 @@ export default function Tasks() {
               </div>
               <div className="space-y-2">
                 <Label>Deadline (optional)</Label>
-                <Input
-                  type="datetime-local"
-                  value={deadline}
-                  onChange={(e) => setDeadline(e.target.value)}
-                />
+                <div className="flex gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Input
+                    type="time"
+                    className="w-[120px]"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                  />
+                </div>
               </div>
               <Button onClick={addTask} className="w-full">Add Task</Button>
             </div>

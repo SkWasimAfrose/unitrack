@@ -29,7 +29,7 @@ interface Schedule {
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6'];
 
-export default function StudyPlanner() {
+export default function DayPlanner() {
   const { user } = useAuth();
   const { toast } = useToast();
   const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -165,8 +165,8 @@ export default function StudyPlanner() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-display font-bold">Study Planner</h1>
-          <p className="text-muted-foreground mt-1">Organize your weekly study schedule</p>
+          <h1 className="text-2xl lg:text-3xl font-display font-bold">Day Planner</h1>
+          <p className="text-muted-foreground mt-1">Organize your daily schedule</p>
         </div>
         <div className="flex gap-2">
           <Dialog open={subjectDialogOpen} onOpenChange={setSubjectDialogOpen}>
@@ -176,7 +176,7 @@ export default function StudyPlanner() {
                 Add Subject
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-[95%] sm:max-w-md rounded-xl">
               <DialogHeader>
                 <DialogTitle>Add New Subject</DialogTitle>
               </DialogHeader>
@@ -217,7 +217,7 @@ export default function StudyPlanner() {
                 Add Schedule
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-[95%] sm:max-w-md rounded-xl">
               <DialogHeader>
                 <DialogTitle>Add Study Session</DialogTitle>
               </DialogHeader>
