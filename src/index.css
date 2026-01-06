@@ -4,8 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     /* Vibrant, Modern Student SaaS Palette */
@@ -135,6 +133,36 @@
   h5,
   h6 {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  }
+  /* Mobile Autofill Zoom Fix */
+  @media screen and (max-width: 768px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
+      max-height: 100%; /* Prevent height locking issues */
+    }
+  }
+
+  /* Neutralize Webkit Autofill Styles */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: hsl(var(--foreground)) !important;
+    transition: background-color 9999s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px transparent !important;
+  }
+
+  /* Global Layout Safety */
+  body {
+    overflow-x: hidden; /* Prevent horizontal scroll from reflow */
+    width: 100%;
+  }
+
+  form {
+    max-width: 100%; /* Prevent form containers from overflowing */
   }
 }
 
