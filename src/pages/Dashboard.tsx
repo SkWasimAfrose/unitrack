@@ -188,6 +188,7 @@ export default function Dashboard() {
           subtitle="assignments due"
           icon={<CheckSquare className="h-5 w-5" />}
           variant="pink"
+          to="/tasks"
         />
         <StatCard
           title="Today's Sessions"
@@ -195,6 +196,7 @@ export default function Dashboard() {
           subtitle="sessions scheduled"
           icon={<BookOpen className="h-5 w-5" />}
           variant="purple"
+          to="/planner"
         />
         <StatCard
           title="Monthly Spent"
@@ -202,6 +204,7 @@ export default function Dashboard() {
           subtitle={`of ₹${budget.toLocaleString()}`}
           icon={<Wallet className="h-5 w-5" />}
           variant="yellow"
+          to="/expenses"
         />
         <StatCard
           title="Quick Notes"
@@ -209,6 +212,7 @@ export default function Dashboard() {
           subtitle="saved notes"
           icon={<StickyNote className="h-5 w-5" />}
           variant="blue"
+          to="/notes"
         />
       </div>
 

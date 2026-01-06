@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface StatCardProps {
@@ -12,9 +13,10 @@ interface StatCardProps {
   };
   variant?: 'purple' | 'pink' | 'yellow' | 'green' | 'blue';
   className?: string;
+  to?: string;
 }
 
-export function StatCard({ title, value, subtitle, icon, trend, variant = 'purple', className }: StatCardProps) {
+export function StatCard({ title, value, subtitle, icon, trend, variant = 'purple', className, to }: StatCardProps) {
   const variants = {
     purple: "border-brand-purple/20 bg-brand-purple/5 text-brand-purple",
     pink: "border-brand-pink/20 bg-brand-pink/5 text-brand-pink",
@@ -39,9 +41,9 @@ export function StatCard({ title, value, subtitle, icon, trend, variant = 'purpl
     blue: "bg-brand-blue",
   };
 
-  return (
+  const CardContent = (
     <div className={cn(
-      "relative bg-card rounded-2xl p-5 border border-border shadow-sm hover-lift animate-fade-in overflow-hidden group",
+      "relative bg-card rounded-2xl p-5 border border-border shadow-sm hover-lift animate-fade-in overflow-hidden group h-full transition-all duration-200",
       className
     )}>
       <div className={cn("absolute top-0 left-0 right-0 h-1.5", borderTopVariants[variant])} />
@@ -69,4 +71,14 @@ export function StatCard({ title, value, subtitle, icon, trend, variant = 'purpl
       </div>
     </div>
   );
+
+  if (to) {
+    return (
+      <Link to={to} className="block h-full">
+        {CardContent}
+      </Link>
+    );
+  }
+
+  return CardContent;
 }
