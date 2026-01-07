@@ -15,27 +15,27 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.jpg', 'robots.txt'],
+      includeAssets: ['logo.webp', 'robots.txt'],
       manifest: {
-        name: 'UniTrack - Student Utility Platform',
+        name: 'UniTrack – One place to organize your day and stay on track',
         short_name: 'UniTrack',
-        description: 'Manage your academic and personal life in one place',
+        description: 'UniTrack is a simple, mobile-first day planner to manage tasks, schedules, expenses, and notes — all in one place.',
         theme_color: '#6366f1',
         icons: [
           {
-            src: 'logo.jpg',
+            src: 'logo.webp',
             sizes: '192x192',
-            type: 'image/jpeg'
+            type: 'image/webp'
           },
           {
-            src: 'logo.jpg',
+            src: 'logo.webp',
             sizes: '512x512',
-            type: 'image/jpeg'
+            type: 'image/webp'
           },
           {
-            src: 'logo.jpg',
+            src: 'logo.webp',
             sizes: '512x512',
-            type: 'image/jpeg',
+            type: 'image/webp',
             purpose: 'any maskable'
           }
         ]

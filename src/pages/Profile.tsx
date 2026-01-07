@@ -14,17 +14,44 @@ import { useToast } from '@/hooks/use-toast';
 
 interface Profile {
   full_name: string | null;
-  course: string | null;
+  role: string | null;
 }
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
-  const [profile, setProfile] = useState<Profile>({ full_name: '', course: '' });
+  const [profile, setProfile] = useState<Profile>({ full_name: '', role: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
+  
+  // Dynamic placeholder for mobile
+  const roles = ["Student", "Developer", "Freelancer", "Working Professional", "Creative", "Personal use"];
+  const [currentRoleIdx, setCurrentRoleIdx] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [fade, setFade] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const interval = setInterval(() => {
+      setFade(true); // Start fade out
+      setTimeout(() => {
+        setCurrentRoleIdx((prev) => (prev + 1) % roles.length);
+        setFade(false); // Start fade in
+      }, 800);
+    }, 3500);
+    
+    return () => clearInterval(interval);
+  }, [isMobile, roles.length]);
 
   useEffect(() => {
     if (user) fetchProfile();
@@ -41,7 +68,7 @@ export default function ProfilePage() {
       if (data) {
         setProfile({
           full_name: data.full_name || '',
-          course: data.course || ''
+          role: data.course || ''
         });
       }
     } catch (error) {
@@ -58,7 +85,7 @@ export default function ProfilePage() {
         .from('profiles')
         .update({
           full_name: profile.full_name,
-          course: profile.course
+          course: profile.role
         })
         .eq('user_id', user!.id);
 
@@ -129,10 +156,6 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-6 px-8 pb-10">
           <div className="space-y-2">
-            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</Label>
-            <Input value={user?.email || ''} disabled className="bg-secondary/30 border-none h-12 rounded-2xl font-bold opacity-60 grayscale" />
-          </div>
-          <div className="space-y-2">
             <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Name</Label>
             <Input
               placeholder="Your name"
@@ -142,12 +165,30 @@ export default function ProfilePage() {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Current Course</Label>
-            <Input
-              placeholder="e.g., Computer Science & Engineering"
-              value={profile.course || ''}
-              onChange={(e) => setProfile(prev => ({ ...prev, course: e.target.value }))}
-              className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-14 rounded-2xl font-bold"
+            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Daily Focus / Role</Label>
+            <div className="relative group">
+              {isMobile && !profile.role && (
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 pointer-events-none font-bold text-base transition-opacity duration-300">
+                  e.g.
+                </span>
+              )}
+              <Input
+                placeholder={isMobile ? `\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 ${roles[currentRoleIdx]}` : "e.g., Student, Developer, Freelancer, Personal use"}
+                value={profile.role || ''}
+                onChange={(e) => setProfile(prev => ({ ...prev, role: e.target.value }))}
+                className={cn(
+                  "bg-secondary/50 border-none focus-visible:ring-brand-purple h-14 rounded-2xl font-bold smooth-placeholder",
+                  isMobile && fade ? "placeholder:opacity-0" : "placeholder:opacity-100"
+                )}
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address (Authenticated)</Label>
+            <Input 
+              value={user?.email || ''} 
+              readOnly 
+              className="bg-secondary/30 border-none h-12 rounded-2xl font-semibold opacity-70 cursor-not-allowed" 
             />
           </div>
           <Button onClick={saveProfile} disabled={saving} className="h-14 px-8 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95 gap-3">

@@ -19,6 +19,7 @@ interface Subject {
 
 interface Schedule {
   id: string;
+  title: string;
   subject_id: string;
   day_of_week: number;
   start_time: string;
@@ -43,6 +44,7 @@ export default function DayPlanner() {
 
   // New schedule form
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [title, setTitle] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedDay, setSelectedDay] = useState('1');
   const [startTime, setStartTime] = useState('09:00');
@@ -104,13 +106,14 @@ export default function DayPlanner() {
   };
 
   const addSchedule = async () => {
-    if (!selectedSubject) return;
+    if (!selectedSubject || !title.trim()) return;
 
     try {
       const { data, error } = await supabase
         .from('study_schedules')
         .insert({
           user_id: user!.id,
+          title: title,
           subject_id: selectedSubject,
           day_of_week: parseInt(selectedDay),
           start_time: startTime,
@@ -123,6 +126,7 @@ export default function DayPlanner() {
 
       setSchedules(prev => [...prev, data]);
       setScheduleDialogOpen(false);
+      setTitle('');
       setSelectedSubject('');
       toast({ title: "Schedule added! 📅" });
     } catch (error) {
@@ -232,6 +236,15 @@ export default function DayPlanner() {
               </DialogHeader>
               <div className="space-y-5 pt-4">
                 <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Title</Label>
+                  <Input
+                    placeholder="e.g., Deep Work, Biology Class"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-12 rounded-2xl font-bold"
+                  />
+                </div>
+                <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Choose Category</Label>
                   <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                     <SelectTrigger className="bg-secondary/50 border-none focus:ring-brand-purple h-12 rounded-2xl font-bold">
@@ -275,7 +288,7 @@ export default function DayPlanner() {
                     <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="bg-secondary/50 border-none focus-visible:ring-brand-purple h-12 rounded-2xl font-bold" />
                   </div>
                 </div>
-                <Button onClick={addSchedule} className="w-full h-14 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95" disabled={!selectedSubject}>
+                <Button onClick={addSchedule} className="w-full h-14 rounded-2xl bg-brand-purple hover:bg-brand-purple/90 text-white font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95" disabled={!selectedSubject || !title.trim()}>
                   Add to Timeline
                 </Button>
               </div>
@@ -357,6 +370,9 @@ export default function DayPlanner() {
                             />
                             <div>
                               <p className="font-bold text-lg tracking-tight group-hover:text-brand-purple transition-colors">
+                                {schedule.title}
+                              </p>
+                              <p className="text-sm font-medium text-muted-foreground">
                                 {schedule.subjects?.name}
                               </p>
                               <div className="flex items-center gap-2 mt-1">

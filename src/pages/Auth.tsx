@@ -290,8 +290,16 @@ export default function Auth() {
           </Tabs>
         </Card>
 
-        <p className="text-center text-[10px] uppercase font-bold tracking-widest text-muted-foreground mt-8 opacity-60">
-          Build & Design by <a href="https://whoiswasim.vercel.app/" target="_blank" rel="noreferrer" className="hover:text-brand-purple transition-colors">Sk Wasim Afrose</a>
+        <p className="text-center text-[10px] uppercase font-bold tracking-widest mt-8">
+          <span className="text-muted-foreground">Build & Design by </span>
+          <a 
+            href="https://whoiswasim.vercel.app/" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="text-brand-purple hover:brightness-110 transition-all"
+          >
+            Sk Wasim Afrose
+          </a>
         </p>
       </div>
     </div>

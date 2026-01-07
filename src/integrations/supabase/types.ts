@@ -133,6 +133,7 @@ export type Database = {
           id: string
           start_time: string
           subject_id: string | null
+          title: string
           user_id: string
         }
         Insert: {
@@ -142,6 +143,7 @@ export type Database = {
           id?: string
           start_time: string
           subject_id?: string | null
+          title?: string
           user_id: string
         }
         Update: {
@@ -151,6 +153,7 @@ export type Database = {
           id?: string
           start_time?: string
           subject_id?: string | null
+          title?: string
           user_id?: string
         }
         Relationships: [
